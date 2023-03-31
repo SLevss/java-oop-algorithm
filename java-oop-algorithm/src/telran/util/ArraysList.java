@@ -34,50 +34,31 @@ public ArraysList() {
 	@Override
 	public void add(int index, T obj) {
 	
-	    if (index < 0 || index > size)
-	      throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
-	    
-	    ensureCapacity();
-
-	    for (int i = size - 1; i >= index; i--)
-	    	array[i + 1] = array[i];
-
+		if(size == array.length) {
+			reallocate();
+		}
+System.arraycopy(array, index, array, index+1, size-index);
 	    array[index] = obj;
 
 	    size++;
 	  } 
-	  private void ensureCapacity() {
-	    if (size >= array.length) {
-	      @SuppressWarnings("unchecked")
-		T[] newArray = (T[])(new Object[size * 2 + 1]);
-	      System.arraycopy(array, 0, newArray, 0, size);
-	      array = newArray;
-	    }
-    }
+	 
+    
 	@Override
 	public T remove(int index) {
 		
-	    checkIndex(index);
+	   
 	    
 	    T obj = array[index];
-	    for (int j = index; j < size - 1; j++)
-	    	array[j] = array[j + 1];
-
-	    array[size - 1] = null; 
+	    System.arraycopy(array, index, array, index+1, size-index-1);
 	    size--;
 	    return obj;
 	    
 	  } 
-	private void checkIndex(int index) {
-	    if (index < 0 || index >= size)
-	      throw new IndexOutOfBoundsException
-	        ("Index: " + index + ", Size: " + size);
-	}
-	  
-
+	
 	@Override
 	public T get(int index) {
-		 checkIndex(index);
+		
 		    return array[index];
 	}
 
